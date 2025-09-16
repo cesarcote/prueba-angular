@@ -1,0 +1,60 @@
+<div class="container">
+    <h2>Lista de Usuarios</h2>
+    @if (loading) {
+        <div class="loading">Cargando usuarios...</div>
+    }
+    <table class="user-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Email</th>
+                <th>Género</th>
+                <th>Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (user of users; track user.id) {
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.gender }}</td>
+                    <td>
+                        <span [class]="user.status === 'active' ? 'status-active' : 'status-inactive'">
+                            {{ user.status }}
+                        </span>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="pagination">
+        <button
+            [disabled]="currentPage === 1"
+            (click)="onPageChange(currentPage - 1)"
+            class="pagination-button">
+            Anterior
+        </button>
+
+        @for (page of getPages(); track page) {
+            <button
+                [class]="page === currentPage ? 'pagination-button active' : 'pagination-button'"
+                (click)="onPageChange(page)">
+                {{ page }}
+            </button>
+        }
+
+        <button
+            [disabled]="currentPage === totalPages"
+            (click)="onPageChange(currentPage + 1)"
+            class="pagination-button">
+            Siguiente
+        </button>
+    </div>
+
+    <div class="pagination-info">
+        Mostrando página {{ currentPage }} de {{ totalPages }} (Total: {{ totalItems }} usuarios)
+    </div>
+</div>
